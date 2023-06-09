@@ -8,7 +8,7 @@ type AccountProps = {
 export const Account = ({ address, onSelect }: AccountProps) => {
   return (
     <button
-      className="custom-button text-xs "
+      className="custom-button primary-color text-xs "
       onClick={() => onSelect(address)}
     >
       {`${address.slice(0, 8)}...${address.slice(-4)}`}

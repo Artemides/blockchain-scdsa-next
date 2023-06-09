@@ -16,6 +16,8 @@ export default function Home() {
   const { account, Moralis } = useMoralis();
 
   const [fromAddress, setFromAddress] = useState(account ?? "");
+  const [recipientAddress, setRecipientAddress] = useState("");
+  const [ammount, setAmmount] = useState(0);
   const [fromBalance, setFromBalance] = useState(0);
   useEffect(() => {
     if (!window.ethereum) return;
@@ -50,7 +52,9 @@ export default function Home() {
   const handleSelectAccount = (account: string) => {
     setFromAddress(account);
   };
-
+  const handleSelectRecipient = (account: string) => {
+    setRecipientAddress(account);
+  };
   if (!isMetamask) {
     return (
       <main className="h-screen flex items-start  gap-4 p-16 bg-gradient-to-r from-slate-950 from-10% via-slate-900 via-40% to-black to-80% ">
@@ -61,22 +65,31 @@ export default function Home() {
 
   return (
     <main className="h-screen flex items-start  gap-4 p-16 bg-gradient-to-r from-slate-950 from-10% via-slate-900 via-40% to-black to-80% ">
-      <Card title="Your Wallet">
+      <Card title="Accounts">
         <div className="p-6 flex flex-col gap-4">
           <label>
             <span className="text-white">Address</span>
             <input
               type="text"
-              className="custom-input"
+              className="custom-input disabled:text-white"
               placeholder="0xksd89213jkasd98213kjas..."
               value={fromAddress}
               onChange={(e) => setFromAddress(e.target.value)}
+              disabled={true}
             />
           </label>
+          {account && (
+            <button
+              className="self-start custom-button success-color text-xs"
+              onClick={() => handleSelectAccount(account)}
+            >
+              me
+            </button>
+          )}
           <Accounts handleSelectAccount={handleSelectAccount} />
           <div className="flex items-center justify-center self-center bg-sky-500/20 rounded-full  px-12 py-3 ">
             <p className="text-white text">
-              Balance:{" "}
+              Balance:
               <span className="font-bold text-sky-500">{fromBalance}</span>
             </p>
           </div>
@@ -90,14 +103,23 @@ export default function Home() {
               type="text"
               className="custom-input"
               placeholder="0xksd89213jkasd98213kjas..."
+              value={recipientAddress}
             />
           </label>
+          <Accounts handleSelectAccount={handleSelectRecipient} />
+
           <label>
             <span className="text-white">Ammout</span>
-            <input type="text" className="custom-input" placeholder="0" />
+            <input
+              type="number"
+              className="custom-input"
+              placeholder="0"
+              value={ammount}
+              onChange={(e) => setAmmount(Number(e.target.value))}
+            />
           </label>
           <button
-            className="custom-button"
+            className="custom-button primary-color"
             onClick={() => signTransaction({ to: "ss", value: 320 })}
           >
             Transfer
