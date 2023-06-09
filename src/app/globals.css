@@ -15,3 +15,10 @@
 .success-color {
   @apply text-green-400 bg-green-400/25 hover:bg-green-400/40;
 }
+.success {
+  @apply text-green-400 bg-green-400/25;
+}
+
+.error {
+  @apply text-red-400 bg-red-400/25;
+}

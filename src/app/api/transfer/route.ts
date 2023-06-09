@@ -17,15 +17,17 @@ export async function POST(request: NextRequest) {
       { status: 401 }
     );
 
-  console.log({ isValid });
-  return NextResponse.json({ signature });
-  // const fromBalance = getBalanceOf(from);
-  // if (fromBalance < value)
-  //   return NextResponse.json(
-  //     { message: "Not enough balance to transfer" },
-  //     { status: 400 }
-  //   );
+  const from = parsedSignature;
+  const to = data.recipient;
+  const value = data.ammount;
 
-  // transferBalances(from, to, value);
-  // return NextResponse.json({ value }, { status: 201 });
+  const fromBalance = getBalanceOf(from);
+  if (!value || fromBalance < value)
+    return NextResponse.json(
+      { message: "Not enough funds to transfer" },
+      { status: 400 }
+    );
+
+  transferBalances(from, to, value);
+  return NextResponse.json({ value }, { status: 201 });
 }

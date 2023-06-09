@@ -19,6 +19,8 @@ export default function Home() {
   const [recipientAddress, setRecipientAddress] = useState("");
   const [ammount, setAmmount] = useState(0);
   const [fromBalance, setFromBalance] = useState(0);
+
+  const [errorMessage, setErrorMessage] = useState(null);
   useEffect(() => {
     if (!window.ethereum) return;
 
@@ -71,6 +73,11 @@ export default function Home() {
         "Content-Type": "application/json",
       },
     });
+    const responseData = await response.json();
+    if (!response.ok) {
+      setErrorMessage(responseData.message);
+    }
+    setErrorMessage(null);
   };
   const handleSelectAccount = (account: string) => {
     setFromAddress(account);
@@ -144,6 +151,15 @@ export default function Home() {
           <button className="custom-button primary-color" onClick={transfer}>
             Transfer
           </button>
+          {errorMessage ? (
+            <span className="error self-center px-2 py-2 rounded">
+              {errorMessage}
+            </span>
+          ) : (
+            <span className="success  self-center px-4 py-2 rounded text-center">
+              Transaction Succesfull
+            </span>
+          )}
         </div>
       </Card>
     </main>
