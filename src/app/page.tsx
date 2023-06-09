@@ -45,10 +45,33 @@ export default function Home() {
     if (!signer) return null;
 
     const signature = await signer.signMessage(dataHashed);
-    console.log({ signature });
+
     return signature;
   };
 
+  const getPublicKey = async () => {
+    const signer = Moralis.web3?.getSigner();
+    if (!signer) return null;
+
+    const pubKey = await signer.getAddress();
+    return pubKey;
+  };
+
+  const transfer = async () => {
+    const data = {
+      recipientAddress,
+      ammount,
+    };
+    const signature = await signTransaction(data);
+    const pubKey = await getPublicKey();
+    const response = await fetch("http://localhost:3000/api/transfer", {
+      method: "POST",
+      body: JSON.stringify({ signature, data, pubKey }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  };
   const handleSelectAccount = (account: string) => {
     setFromAddress(account);
   };
@@ -118,10 +141,7 @@ export default function Home() {
               onChange={(e) => setAmmount(Number(e.target.value))}
             />
           </label>
-          <button
-            className="custom-button primary-color"
-            onClick={() => signTransaction({ to: "ss", value: 320 })}
-          >
+          <button className="custom-button primary-color" onClick={transfer}>
             Transfer
           </button>
         </div>
