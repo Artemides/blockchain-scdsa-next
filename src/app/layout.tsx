@@ -1,5 +1,8 @@
+import { Navbar } from "@/Components/Navbar";
 import "./globals.css";
 import { Inter } from "next/font/google";
+import { useEffect, useState } from "react";
+import { Alert } from "@/Components/Alert";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -15,7 +18,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="font-sans">
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <Navbar />
+        {children}
+      </body>
     </html>
   );
 }

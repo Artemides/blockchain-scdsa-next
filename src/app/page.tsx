@@ -1,9 +1,27 @@
+"use client";
 import { Card } from "@/Components/Card";
 import Image from "next/image";
-
+import MetamaskSDK, { MetaMaskSDKOptions } from "@metamask/sdk";
+import { useEffect, useState } from "react";
+import { Alert } from "@/Components/Alert";
 export default function Home() {
+  // const MMSDK = new MetamaskSDK();
+  // const ethereum = MMSDK.getProvider();
+  const [isMetamask, setIsMetamask] = useState(false);
+  useEffect(() => {
+    if (!window.ethereum) return;
+
+    setIsMetamask(true);
+  }, []);
+  if (!isMetamask) {
+    return (
+      <main className="h-screen flex items-start  gap-4 p-16 bg-gradient-to-r from-slate-950 from-10% via-slate-900 via-40% to-black to-80% ">
+        <Alert />
+      </main>
+    );
+  }
   return (
-    <main className="w-screen h-screen flex items-start  gap-4 p-16 bg-gradient-to-r from-slate-950 from-10% via-slate-900 via-40% to-black to-80% ">
+    <main className="h-screen flex items-start  gap-4 p-16 bg-gradient-to-r from-slate-950 from-10% via-slate-900 via-40% to-black to-80% ">
       <Card title="Your Wallet">
         <div className="p-6 flex flex-col">
           <label>
@@ -14,7 +32,7 @@ export default function Home() {
               placeholder="0xksd89213jkasd98213kjas..."
             />
           </label>
-          <div className="flex items-center justify-center self-center bg-sky-500/10 rounded-full mt-4 px-12 py-3 ">
+          <div className="flex items-center justify-center self-center bg-sky-500/20 rounded-full mt-4 px-12 py-3 ">
             <p className="text-white text">
               Balance: <span className="font-bold">0</span>
             </p>
