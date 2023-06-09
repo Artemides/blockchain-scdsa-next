@@ -137,7 +137,7 @@ export default function Home() {
           <div className="flex items-center justify-center self-center bg-sky-500/20 rounded-full  px-12 py-3 ">
             <p className="text-white text">
               Balance:
-              <span className="font-bold text-sky-500">{fromBalance}</span>
+              <span className="font-bold text-green-400"> {fromBalance}</span>
             </p>
           </div>
         </div>

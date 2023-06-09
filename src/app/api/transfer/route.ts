@@ -7,7 +7,6 @@ import { ethers } from "ethers";
 
 export async function POST(request: NextRequest) {
   const { signature, data, pubKey } = await request.json();
-  console.log({ signature });
   const dataHashed = keccak256(utf8ToBytes(JSON.stringify(data)));
   const parsedSignature = ethers.verifyMessage(dataHashed, signature);
   const isValid = parsedSignature === pubKey;
@@ -17,6 +16,7 @@ export async function POST(request: NextRequest) {
       { status: 401 }
     );
 
+  console.log({ parsedSignature });
   const from = parsedSignature;
   const to = data.recipient;
   const value = data.ammount;
