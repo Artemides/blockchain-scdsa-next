@@ -10,13 +10,14 @@ export async function POST(request: NextRequest) {
   const dataHashed = keccak256(utf8ToBytes(JSON.stringify(data)));
   const parsedSignature = ethers.verifyMessage(dataHashed, signature);
   const isValid = parsedSignature === pubKey;
+
+  console.log({ parsedSignature, pubKey });
   if (!isValid)
     return NextResponse.json(
       { message: "Not allowed to transfer" },
       { status: 401 }
     );
 
-  console.log({ parsedSignature });
   const from = parsedSignature;
   const to = data.recipient;
   const value = data.ammount;

@@ -56,12 +56,12 @@ export default function Home() {
     return signature;
   };
 
-  const getPublicKey = async () => {
+  const getAddress = async () => {
     const signer = Moralis.web3?.getSigner();
     if (!signer) return null;
 
-    const pubKey = await signer.getAddress();
-    return pubKey;
+    const address = await signer.getAddress();
+    return address;
   };
 
   const transfer = async () => {
@@ -128,7 +128,11 @@ export default function Home() {
           {account && (
             <button
               className="self-start custom-button success-color text-xs"
-              onClick={() => handleSelectAccount(account)}
+              onClick={async () => {
+                const address = await getAddress();
+                if (!address) return;
+                handleSelectAccount(address);
+              }}
             >
               me
             </button>

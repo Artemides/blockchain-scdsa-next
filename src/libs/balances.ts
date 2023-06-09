@@ -8,7 +8,7 @@ const balances: Balance = {
   "0x6a31af9dae2000b7ee9c0b40ca3d865cd2458809": 2000,
   "0xd2921c375f53407954bf95785e4dcf89913b0622": 7000,
   "0x6a5ae7507101393afce5a7a5004801e00f734eee": 2312,
-  "0x38c5479620f6c2f29677f04d89e356cf6e75cfde": 3200,
+  "0x38C5479620f6C2f29677F04d89E356cF6E75CFde": 3200,
 };
 
 function setInitialBalance(address: string) {
