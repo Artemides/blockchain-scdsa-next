@@ -2,13 +2,16 @@ import React from "react";
 
 type AccountProps = {
   address: string;
-  onSelect: () => void;
+  onSelect: (address: string) => void;
 };
 
 export const Account = ({ address, onSelect }: AccountProps) => {
   return (
-    <button className="custom-button" onClick={onSelect}>
-      {address}
+    <button
+      className="custom-button text-xs "
+      onClick={() => onSelect(address)}
+    >
+      {`${address.slice(0, 8)}...${address.slice(-4)}`}
     </button>
   );
 };

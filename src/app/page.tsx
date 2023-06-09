@@ -7,6 +7,7 @@ import { Alert } from "@/Components/Alert";
 import { useMoralis } from "react-moralis";
 import { keccak256 } from "ethereum-cryptography/keccak";
 import { utf8ToBytes } from "ethereum-cryptography/utils";
+import { Accounts } from "@/Components/Accounts";
 export default function Home() {
   // const MMSDK = new MetamaskSDK();
   // const ethereum = MMSDK.getProvider();
@@ -46,6 +47,10 @@ export default function Home() {
     return signature;
   };
 
+  const handleSelectAccount = (account: string) => {
+    setFromAddress(account);
+  };
+
   if (!isMetamask) {
     return (
       <main className="h-screen flex items-start  gap-4 p-16 bg-gradient-to-r from-slate-950 from-10% via-slate-900 via-40% to-black to-80% ">
@@ -57,7 +62,7 @@ export default function Home() {
   return (
     <main className="h-screen flex items-start  gap-4 p-16 bg-gradient-to-r from-slate-950 from-10% via-slate-900 via-40% to-black to-80% ">
       <Card title="Your Wallet">
-        <div className="p-6 flex flex-col">
+        <div className="p-6 flex flex-col gap-4">
           <label>
             <span className="text-white">Address</span>
             <input
@@ -68,7 +73,8 @@ export default function Home() {
               onChange={(e) => setFromAddress(e.target.value)}
             />
           </label>
-          <div className="flex items-center justify-center self-center bg-sky-500/20 rounded-full mt-4 px-12 py-3 ">
+          <Accounts handleSelectAccount={handleSelectAccount} />
+          <div className="flex items-center justify-center self-center bg-sky-500/20 rounded-full  px-12 py-3 ">
             <p className="text-white text">
               Balance:{" "}
               <span className="font-bold text-sky-500">{fromBalance}</span>
