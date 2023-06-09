@@ -21,6 +21,9 @@ export default function Home() {
   const [fromBalance, setFromBalance] = useState(0);
 
   const [errorMessage, setErrorMessage] = useState(null);
+
+  const [showTransactionMessage, setShowTransactionMessage] = useState(false);
+
   useEffect(() => {
     if (!window.ethereum) return;
 
@@ -74,10 +77,17 @@ export default function Home() {
       },
     });
     const responseData = await response.json();
-    if (!response.ok) {
+    console.log({ responseData });
+    if (response.status !== 200) {
+      console.log({ message: responseData.message });
       setErrorMessage(responseData.message);
+    } else {
+      setErrorMessage(null);
     }
-    setErrorMessage(null);
+    setShowTransactionMessage(true);
+    setTimeout(() => {
+      setShowTransactionMessage(false);
+    }, 5000);
   };
   const handleSelectAccount = (account: string) => {
     setFromAddress(account);
@@ -151,14 +161,19 @@ export default function Home() {
           <button className="custom-button primary-color" onClick={transfer}>
             Transfer
           </button>
-          {errorMessage ? (
-            <span className="error self-center px-2 py-2 rounded">
-              {errorMessage}
-            </span>
-          ) : (
-            <span className="success  self-center px-4 py-2 rounded text-center">
-              Transaction Succesfull
-            </span>
+          {showTransactionMessage && (
+            <>
+              {" "}
+              {errorMessage ? (
+                <span className="error self-center px-2 py-2 rounded text-center">
+                  {errorMessage}
+                </span>
+              ) : (
+                <span className="success  self-center px-4 py-2 rounded text-center">
+                  Transaction Succesfull
+                </span>
+              )}
+            </>
           )}
         </div>
       </Card>
