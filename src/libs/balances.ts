@@ -13,6 +13,9 @@ function setInitialBalance(address: string) {
   }
 }
 
+export const getAccounts = () => {
+  return Object.keys(balances);
+};
 export const getBalanceOf = (address: string) => balances[address] || 0;
 
 export const transferBalances = (from: string, to: string, value: number) => {
