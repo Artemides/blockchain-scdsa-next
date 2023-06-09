@@ -22,12 +22,7 @@ export const Navbar = () => {
   }, [Moralis, deactivateWeb3]);
 
   const showConnectedWallet = (account: string) => {
-    return (
-      <span className="text-sm font-bold text-sky-500 ">{`${account.slice(
-        0,
-        6
-      )}...${account.slice(-4)}`}</span>
-    );
+    return <span className="text-sm font-bold text-sky-500 ">{account}</span>;
   };
 
   useEffect(() => {

@@ -4,15 +4,48 @@ import Image from "next/image";
 import MetamaskSDK, { MetaMaskSDKOptions } from "@metamask/sdk";
 import { useEffect, useState } from "react";
 import { Alert } from "@/Components/Alert";
+import { useMoralis } from "react-moralis";
+import { keccak256 } from "ethereum-cryptography/keccak";
+import { utf8ToBytes } from "ethereum-cryptography/utils";
 export default function Home() {
   // const MMSDK = new MetamaskSDK();
   // const ethereum = MMSDK.getProvider();
   const [isMetamask, setIsMetamask] = useState(false);
+
+  const { account, Moralis } = useMoralis();
+
+  const [fromAddress, setFromAddress] = useState(account ?? "");
+
   useEffect(() => {
     if (!window.ethereum) return;
 
     setIsMetamask(true);
   }, []);
+
+  useEffect(() => {
+    if (!fromAddress) return;
+
+    const fetchAccountBalance = async () => {
+      const balance = await fetch(
+        `http://localhost:3000/balances/${fromAddress}`
+      ).then((res) => {
+        console.log({ balances: res.json() });
+      });
+    };
+    fetchAccountBalance();
+  }, [fromAddress]);
+
+  const signTransaction = async (data: any): Promise<string | null> => {
+    const dataString = JSON.stringify(data);
+    const dataHashed = keccak256(utf8ToBytes(dataString));
+    const signer = Moralis.web3?.getSigner();
+    if (!signer) return null;
+
+    const signature = await signer.signMessage(dataHashed);
+    console.log({ signature });
+    return signature;
+  };
+
   if (!isMetamask) {
     return (
       <main className="h-screen flex items-start  gap-4 p-16 bg-gradient-to-r from-slate-950 from-10% via-slate-900 via-40% to-black to-80% ">
@@ -20,6 +53,7 @@ export default function Home() {
       </main>
     );
   }
+
   return (
     <main className="h-screen flex items-start  gap-4 p-16 bg-gradient-to-r from-slate-950 from-10% via-slate-900 via-40% to-black to-80% ">
       <Card title="Your Wallet">
@@ -30,6 +64,7 @@ export default function Home() {
               type="text"
               className="custom-input"
               placeholder="0xksd89213jkasd98213kjas..."
+              value={fromAddress}
             />
           </label>
           <div className="flex items-center justify-center self-center bg-sky-500/20 rounded-full mt-4 px-12 py-3 ">
@@ -53,7 +88,10 @@ export default function Home() {
             <span className="text-white">Ammout</span>
             <input type="text" className="custom-input" placeholder="0" />
           </label>
-          <button className="py-2 px-6 self-center text-sky-500 font-semibold bg-sky-500/25 rounded-full hover:bg-sky-500/40 transition-colors ease-out duration-300">
+          <button
+            className="py-2 px-6 self-center text-sky-500 font-semibold bg-sky-500/25 rounded-full hover:bg-sky-500/40 transition-colors ease-out duration-300"
+            onClick={() => signTransaction({ to: "ss", value: 320 })}
+          >
             Transfer
           </button>
         </div>
