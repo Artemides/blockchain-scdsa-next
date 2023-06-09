@@ -16,7 +16,7 @@ export const Accounts = ({ handleSelectAccount }: AccountsProps) => {
       const accountsWithOutSigner = (accounts as string[]).filter(
         (account) => account !== signerAccount
       );
-      setAccounts(accounts);
+      setAccounts(accountsWithOutSigner);
     };
     getAccounts();
   }, []);

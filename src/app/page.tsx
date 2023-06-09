@@ -71,7 +71,7 @@ export default function Home() {
         ammount,
       };
       const signature = await signTransaction(data);
-      const pubKey = await getPublicKey();
+      const pubKey = fromAddress;
       const response = await fetch("http://localhost:3000/api/transfer", {
         method: "POST",
         body: JSON.stringify({ signature, data, pubKey }),
@@ -90,7 +90,7 @@ export default function Home() {
       setShowTransactionMessage(true);
       setTimeout(() => {
         setShowTransactionMessage(false);
-      }, 5000);
+      }, 10000);
     } catch (error) {
       console.error(error);
     }
@@ -173,11 +173,11 @@ export default function Home() {
             <>
               {" "}
               {errorMessage ? (
-                <span className="error self-center px-2 py-2 rounded text-center">
+                <span className="error text-sm font-medium self-center px-2 py-[1px] rounded text-center">
                   {errorMessage}
                 </span>
               ) : (
-                <span className="success  self-center px-4 py-2 rounded text-center">
+                <span className="success  text-sm  font-medium self-center px-4 py-[1px] rounded text-center">
                   Transaction Succesfull
                 </span>
               )}
