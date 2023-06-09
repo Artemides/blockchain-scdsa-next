@@ -15,7 +15,7 @@ export default function Home() {
   const { account, Moralis } = useMoralis();
 
   const [fromAddress, setFromAddress] = useState(account ?? "");
-
+  const [fromBalance, setFromBalance] = useState(0);
   useEffect(() => {
     if (!window.ethereum) return;
 
@@ -26,11 +26,11 @@ export default function Home() {
     if (!fromAddress) return;
 
     const fetchAccountBalance = async () => {
-      const balance = await fetch(
-        `http://localhost:3000/balances/${fromAddress}`
-      ).then((res) => {
-        console.log({ balances: res.json() });
-      });
+      const response = await fetch(
+        `http://localhost:3000/api/balances/${fromAddress}`
+      );
+      const { balance } = await response.json();
+      setFromBalance(balance);
     };
     fetchAccountBalance();
   }, [fromAddress]);
@@ -65,11 +65,13 @@ export default function Home() {
               className="custom-input"
               placeholder="0xksd89213jkasd98213kjas..."
               value={fromAddress}
+              onChange={(e) => setFromAddress(e.target.value)}
             />
           </label>
           <div className="flex items-center justify-center self-center bg-sky-500/20 rounded-full mt-4 px-12 py-3 ">
             <p className="text-white text">
-              Balance: <span className="font-bold">0</span>
+              Balance:{" "}
+              <span className="font-bold text-sky-500">{fromBalance}</span>
             </p>
           </div>
         </div>
@@ -89,7 +91,7 @@ export default function Home() {
             <input type="text" className="custom-input" placeholder="0" />
           </label>
           <button
-            className="py-2 px-6 self-center text-sky-500 font-semibold bg-sky-500/25 rounded-full hover:bg-sky-500/40 transition-colors ease-out duration-300"
+            className="custom-button"
             onClick={() => signTransaction({ to: "ss", value: 320 })}
           >
             Transfer
