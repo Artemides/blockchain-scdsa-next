@@ -8,6 +8,8 @@ import { useMoralis } from "react-moralis";
 import { keccak256 } from "ethereum-cryptography/keccak";
 import { utf8ToBytes } from "ethereum-cryptography/utils";
 import { Accounts } from "@/Components/Accounts";
+import { Modak } from "next/font/google";
+import { Modal } from "@/Components/Modal";
 export default function Home() {
   // const MMSDK = new MetamaskSDK();
   // const ethereum = MMSDK.getProvider();
@@ -63,31 +65,35 @@ export default function Home() {
   };
 
   const transfer = async () => {
-    const data = {
-      recipientAddress,
-      ammount,
-    };
-    const signature = await signTransaction(data);
-    const pubKey = await getPublicKey();
-    const response = await fetch("http://localhost:3000/api/transfer", {
-      method: "POST",
-      body: JSON.stringify({ signature, data, pubKey }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    const responseData = await response.json();
-    console.log({ responseData });
-    if (response.status !== 200) {
-      console.log({ message: responseData.message });
-      setErrorMessage(responseData.message);
-    } else {
-      setErrorMessage(null);
+    try {
+      const data = {
+        recipientAddress,
+        ammount,
+      };
+      const signature = await signTransaction(data);
+      const pubKey = await getPublicKey();
+      const response = await fetch("http://localhost:3000/api/transfer", {
+        method: "POST",
+        body: JSON.stringify({ signature, data, pubKey }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const responseData = await response.json();
+      console.log({ responseData });
+      if (response.status !== 200) {
+        console.log({ message: responseData.message });
+        setErrorMessage(responseData.message);
+      } else {
+        setErrorMessage(null);
+      }
+      setShowTransactionMessage(true);
+      setTimeout(() => {
+        setShowTransactionMessage(false);
+      }, 5000);
+    } catch (error) {
+      console.error(error);
     }
-    setShowTransactionMessage(true);
-    setTimeout(() => {
-      setShowTransactionMessage(false);
-    }, 5000);
   };
   const handleSelectAccount = (account: string) => {
     setFromAddress(account);
@@ -106,6 +112,7 @@ export default function Home() {
   return (
     <main className="h-screen flex items-start  gap-4 p-16 bg-gradient-to-r from-slate-950 from-10% via-slate-900 via-40% to-black to-80% ">
       <Card title="Accounts">
+        {!account && <Modal />}
         <div className="p-6 flex flex-col gap-4">
           <label>
             <span className="text-white">Address</span>
@@ -136,6 +143,7 @@ export default function Home() {
         </div>
       </Card>
       <Card title="Transaction">
+        {!account && <Modal />}
         <div className="p-6 flex flex-col gap-6">
           <label>
             <span className="text-white">Recipient</span>
