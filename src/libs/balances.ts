@@ -30,3 +30,4 @@ export const transferBalances = (from: string, to: string, value: number) => {
   balances[to] += value;
   return value;
 };
+export const getBalances = () => balances;

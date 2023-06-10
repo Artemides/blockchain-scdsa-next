@@ -2,7 +2,7 @@
 import { Card } from "@/Components/Card";
 import Image from "next/image";
 import MetamaskSDK, { MetaMaskSDKOptions } from "@metamask/sdk";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Alert } from "@/Components/Alert";
 import { useMoralis } from "react-moralis";
 import { keccak256 } from "ethereum-cryptography/keccak";
@@ -31,19 +31,19 @@ export default function Home() {
 
     setIsMetamask(true);
   }, []);
+  const fetchAccountBalance = useCallback(async () => {
+    const response = await fetch(
+      `http://localhost:3000/api/balances/${fromAddress}`
+    );
+    const { balance } = await response.json();
+    setFromBalance(balance);
+  }, [fromAddress]);
 
   useEffect(() => {
     if (!fromAddress) return;
 
-    const fetchAccountBalance = async () => {
-      const response = await fetch(
-        `http://localhost:3000/api/balances/${fromAddress}`
-      );
-      const { balance } = await response.json();
-      setFromBalance(balance);
-    };
     fetchAccountBalance();
-  }, [fromAddress]);
+  }, [fetchAccountBalance, fromAddress]);
 
   const signTransaction = async (data: any): Promise<string | null> => {
     const dataString = JSON.stringify(data);
@@ -81,13 +81,14 @@ export default function Home() {
       });
       const responseData = await response.json();
       console.log({ responseData });
-      if (response.status !== 200) {
+      if (!response.ok) {
         console.log({ message: responseData.message });
         setErrorMessage(responseData.message);
       } else {
         setErrorMessage(null);
       }
       setShowTransactionMessage(true);
+      fetchAccountBalance();
       setTimeout(() => {
         setShowTransactionMessage(false);
       }, 10000);
