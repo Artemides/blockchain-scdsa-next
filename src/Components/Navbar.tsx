@@ -1,13 +1,33 @@
 "use client";
-import React, { useEffect } from "react";
+import { ethers } from "ethers";
+import React, { useCallback, useEffect, useState } from "react";
 import { useMoralis } from "react-moralis";
 
 export const Navbar = () => {
   const { enableWeb3, account, Moralis, deactivateWeb3 } = useMoralis();
+  const [signerAddress, setSignerAddress] = useState<string | null>(null);
+
+  const createBalanceForAddress = useCallback(async () => {
+    console.log({ signerAddress });
+    if (!signerAddress) return;
+
+    const response = await fetch(
+      `http://localhost:3000/api/accounts/${signerAddress}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    const responseData = await response.json();
+  }, [signerAddress]);
+
   const handleConnectWallet = async () => {
     try {
       await enableWeb3();
       localStorage.setItem("connection", "injectedWeb3");
+      await createBalanceForAddress();
     } catch (error) {
       console.error(error);
     }
@@ -28,11 +48,29 @@ export const Navbar = () => {
   useEffect(() => {
     const autoConnect = async () => {
       if (!localStorage.getItem("connection")) return;
-
+      await createBalanceForAddress();
       await enableWeb3();
     };
     autoConnect();
-  }, [enableWeb3]);
+  }, [createBalanceForAddress, enableWeb3]);
+
+  useEffect(() => {
+    const { ethereum } = window;
+    if (!ethereum) return;
+
+    const getAccounts = async () => {
+      try {
+        const provider = new ethers.BrowserProvider(ethereum);
+        const signer = await provider.getSigner();
+        const address = await signer.getAddress();
+
+        setSignerAddress(address);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    getAccounts();
+  }, []);
 
   return (
     <nav className="w-full absolute top-0 flex justify-around p-2 bg-gradient-radial from-slate-900 to-black shadow-sm ">

@@ -10,4 +10,13 @@
 - Validates the given signature in the Backend
 - Data is static stored into a centralized server for practice purpuses.
 
+## Used
+
+- NextJS
+- MetaMask
+- Moralis-Web3
+- Ethers
+- ethereum-cryptography
+- Tailwind
+
 # Thanks.

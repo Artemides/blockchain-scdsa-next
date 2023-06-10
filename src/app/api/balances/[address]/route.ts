@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 export async function GET(request: Request, { params }: any) {
   try {
     const address = params.address;
-    console.log({ address });
+
     const balance = getBalanceOf(address);
     return NextResponse.json({ balance }, { status: 200 });
   } catch (error) {

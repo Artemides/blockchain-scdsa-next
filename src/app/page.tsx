@@ -153,6 +153,7 @@ export default function Home() {
               className="custom-input"
               placeholder="0xksd89213jkasd98213kjas..."
               value={recipientAddress}
+              onChange={(e) => handleSelectRecipient(e.target.value)}
             />
           </label>
           <Accounts handleSelectAccount={handleSelectRecipient} />

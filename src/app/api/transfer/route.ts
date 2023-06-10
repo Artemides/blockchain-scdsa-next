@@ -21,6 +21,8 @@ export async function POST(request: NextRequest) {
   const value = data.ammount;
 
   const fromBalance = getBalanceOf(from);
+  const balances = getBalances();
+
   if (!value || fromBalance < value)
     return NextResponse.json(
       { message: "Not enough funds to transfer" },
