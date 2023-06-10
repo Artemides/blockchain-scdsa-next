@@ -20,8 +20,8 @@ export async function POST(request: NextRequest) {
   const to = data.recipientAddress;
   const value = data.ammount;
 
-  const fromBalance = getBalanceOf(from);
-  const balances = getBalances();
+  const fromBalance = await getBalanceOf(from);
+  const balances = await getBalances();
 
   if (!value || fromBalance < value)
     return NextResponse.json(

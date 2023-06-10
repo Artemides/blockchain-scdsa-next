@@ -5,7 +5,7 @@ export async function GET(request: Request, { params }: any) {
   try {
     const address = params.address;
 
-    const balance = getBalanceOf(address);
+    const balance = await getBalanceOf(address);
     return NextResponse.json({ balance }, { status: 200 });
   } catch (error) {
     console.log({ error });

@@ -1,41 +1,48 @@
 import path from "path";
-import fs from "fs";
+import fs from "fs/promises";
 const BALANCES_PATH = "./public/balances.json";
 
 type Balance = {
   [key: string]: number;
 };
 
-const getServerBalances = () => {
-  const balances: Balance = JSON.parse(fs.readFileSync(BALANCES_PATH, "utf8"));
+const getServerBalances = async () => {
+  const file = await fs.readFile(BALANCES_PATH, "utf8");
+  const balances: Balance = JSON.parse(file);
   return balances;
 };
 
-const saveBalances = (balances: Balance) => {
-  fs.writeFileSync(BALANCES_PATH, JSON.stringify(balances));
+const saveBalances = async (balances: Balance) => {
+  try {
+    await fs.writeFile(BALANCES_PATH, JSON.stringify(balances), "utf8");
+  } catch (error) {}
 };
 
 getServerBalances();
 
-function setInitialBalance(address: string) {
-  const balances = getServerBalances();
+async function setInitialBalance(address: string) {
+  const balances = await getServerBalances();
   if (!balances[address]) {
     balances[address] = 0;
   }
   saveBalances(balances);
 }
 
-export const getAccounts = () => {
-  const balances = getServerBalances();
+export const getAccounts = async () => {
+  const balances = await getServerBalances();
   return Object.keys(balances);
 };
-export const getBalanceOf = (address: string) => {
-  const balances = getServerBalances();
+export const getBalanceOf = async (address: string) => {
+  const balances = await getServerBalances();
   return balances[address] || 0;
 };
 
-export const transferBalances = (from: string, to: string, value: number) => {
-  const balances = getServerBalances();
+export const transferBalances = async (
+  from: string,
+  to: string,
+  value: number
+) => {
+  const balances = await getServerBalances();
   setInitialBalance(from);
   setInitialBalance(to);
 
@@ -45,8 +52,8 @@ export const transferBalances = (from: string, to: string, value: number) => {
   return value;
 };
 
-export const accountExist = (address: string) => {
-  const balances = getServerBalances();
+export const accountExist = async (address: string) => {
+  const balances = await getServerBalances();
   return Object.keys(balances).includes(address);
 };
 
@@ -55,8 +62,8 @@ export const getBalances = () => {
   return balances;
 };
 
-export const addNewAddress = (address: string) => {
-  const balances = getServerBalances();
+export const addNewAddress = async (address: string) => {
+  const balances = await getServerBalances();
   balances[address] = 8545;
   console.log({ balances });
   saveBalances(balances);
