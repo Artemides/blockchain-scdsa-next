@@ -5,14 +5,15 @@ import { useMoralis } from "react-moralis";
 type AccountsProps = {
   handleSelectAccount: (address: string) => void;
 };
+const apiUrl =
+  process.env.NODE_ENV === "production"
+    ? process.env.NEXT_PUBLIC_API_URL_PROD
+    : process.env.NEXT_PUBLIC_API_URL_DEV;
 
 export const Accounts = ({ handleSelectAccount }: AccountsProps) => {
   const [accounts, setAccounts] = useState<string[]>([]);
   const { Moralis } = useMoralis();
-  const apiUrl =
-    process.env.NODE_ENV === "production"
-      ? process.env.NEXT_PUBLIC_API_URL_PROD
-      : process.env.NEXT_PUBLIC_API_URL_DEV;
+
   const getAddress = useCallback(async () => {
     const signer = Moralis.web3?.getSigner();
     if (!signer) return null;
