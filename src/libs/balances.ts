@@ -1,12 +1,14 @@
 import path from "path";
 import fs from "fs/promises";
-const BALANCES_PATH = "./public/balances.json";
+
+const BALANCES_PATH = path.join(process.cwd(), `/public/balances.json`);
 
 type Balance = {
   [key: string]: number;
 };
 
 const getServerBalances = async () => {
+  console.log({ BALANCES_PATH });
   const file = await fs.readFile(BALANCES_PATH, "utf8");
   const balances: Balance = JSON.parse(file);
   return balances;
@@ -17,8 +19,6 @@ const saveBalances = async (balances: Balance) => {
     await fs.writeFile(BALANCES_PATH, JSON.stringify(balances), "utf8");
   } catch (error) {}
 };
-
-getServerBalances();
 
 async function setInitialBalance(address: string) {
   const balances = await getServerBalances();
