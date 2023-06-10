@@ -16,8 +16,10 @@ const getServerBalances = async () => {
 
 const saveBalances = async (balances: Balance) => {
   try {
-    await fs.writeFile(BALANCES_PATH, JSON.stringify(balances), "utf8");
-  } catch (error) {}
+    await fs.writeFile(BALANCES_PATH, JSON.stringify(balances));
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 async function setInitialBalance(address: string) {
