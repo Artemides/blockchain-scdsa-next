@@ -1,13 +1,13 @@
 "use client";
-import { Card } from "@/components/Card";
 import MetamaskSDK, { MetaMaskSDKOptions } from "@metamask/sdk";
 import { useCallback, useEffect, useState } from "react";
-import { Alert } from "@/components/Alert";
 import { useMoralis } from "react-moralis";
 import { keccak256 } from "ethereum-cryptography/keccak";
 import { utf8ToBytes } from "ethereum-cryptography/utils";
-import { Accounts } from "@/components/Accounts";
+import { Alert } from "@/components/Alert";
+import { Card } from "@/components/Card";
 import { Modal } from "@/components/Modal";
+import { Accounts } from "@/components/Accounts";
 
 const apiUrl =
   process.env.NODE_ENV === "production"
