@@ -24,6 +24,7 @@ export const Accounts = ({ handleSelectAccount }: AccountsProps) => {
 
   useEffect(() => {
     const getAccounts = async () => {
+      console.log({ seeee: `${apiUrl}/accounts` });
       const response = await fetch(`${apiUrl}/accounts`);
       const { accounts } = await response.json();
       const signerAddress = await getAddress();
