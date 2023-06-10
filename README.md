@@ -8,7 +8,7 @@
 - Allows to transfer value between peers
 - Uses Metamask for signing the transactions
 - Validates the given signature in the Backend
-- Data is static stored into a centralized server for practice purpuses.
+- Persists data in locally in a json file
 
 ## Used
 
