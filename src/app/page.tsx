@@ -85,6 +85,7 @@ export default function Home() {
       }
       setShowTransactionMessage(true);
       fetchAccountBalance();
+      setAmmount(0);
       setTimeout(() => {
         setShowTransactionMessage(false);
       }, 10000);
