@@ -4,7 +4,6 @@ import { NextResponse } from "next/server";
 export async function POST(request: Request, { params }: any) {
   try {
     const address = params.address;
-    console.log({ address });
     const exists = await accountExist(address);
     if (exists) return NextResponse.json({ exists }, { status: 200 });
 
@@ -15,6 +14,6 @@ export async function POST(request: Request, { params }: any) {
       { status: 201 }
     );
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 }

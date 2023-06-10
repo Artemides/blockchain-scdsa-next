@@ -9,7 +9,10 @@ type AccountsProps = {
 export const Accounts = ({ handleSelectAccount }: AccountsProps) => {
   const [accounts, setAccounts] = useState<string[]>([]);
   const { Moralis } = useMoralis();
-
+  const apiUrl =
+    process.env.NODE_ENV === "production"
+      ? process.env.NEXT_PUBLIC_API_URL_PROD
+      : process.env.NEXT_PUBLIC_API_URL_DEV;
   const getAddress = useCallback(async () => {
     const signer = Moralis.web3?.getSigner();
     if (!signer) return null;
@@ -20,7 +23,7 @@ export const Accounts = ({ handleSelectAccount }: AccountsProps) => {
 
   useEffect(() => {
     const getAccounts = async () => {
-      const response = await fetch("http://localhost:3000/api/accounts");
+      const response = await fetch(`${apiUrl}/accounts`);
       const { accounts } = await response.json();
       const signerAddress = await getAddress();
       const accountsWithOutSigner = (accounts as string[]).filter(

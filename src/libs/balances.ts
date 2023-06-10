@@ -65,6 +65,5 @@ export const getBalances = () => {
 export const addNewAddress = async (address: string) => {
   const balances = await getServerBalances();
   balances[address] = 8545;
-  console.log({ balances });
   saveBalances(balances);
 };

@@ -8,7 +8,7 @@ export async function GET(request: Request, { params }: any) {
     const balance = await getBalanceOf(address);
     return NextResponse.json({ balance }, { status: 200 });
   } catch (error) {
-    console.log({ error });
+    console.error({ error });
     return NextResponse.json(
       { message: "Address balances not found" },
       { status: 404 }

@@ -8,6 +8,12 @@ import { keccak256 } from "ethereum-cryptography/keccak";
 import { utf8ToBytes } from "ethereum-cryptography/utils";
 import { Accounts } from "@/Components/Accounts";
 import { Modal } from "@/Components/Modal";
+
+const apiUrl =
+  process.env.NODE_ENV === "production"
+    ? process.env.NEXT_PUBLIC_API_URL_PROD
+    : process.env.NEXT_PUBLIC_API_URL_DEV;
+
 export default function Home() {
   // const MMSDK = new MetamaskSDK();
   // const ethereum = MMSDK.getProvider();
@@ -30,9 +36,7 @@ export default function Home() {
     setIsMetamask(true);
   }, []);
   const fetchAccountBalance = useCallback(async () => {
-    const response = await fetch(
-      `http://localhost:3000/api/balances/${fromAddress}`
-    );
+    const response = await fetch(`${apiUrl}/balances/${fromAddress}`);
     const { balance } = await response.json();
     setFromBalance(balance);
   }, [fromAddress]);
@@ -70,7 +74,7 @@ export default function Home() {
       };
       const signature = await signTransaction(data);
       const pubKey = fromAddress;
-      const response = await fetch("http://localhost:3000/api/transfer", {
+      const response = await fetch(`${apiUrl}/transfer`, {
         method: "POST",
         body: JSON.stringify({ signature, data, pubKey }),
         headers: {

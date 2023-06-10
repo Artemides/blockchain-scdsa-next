@@ -3,23 +3,24 @@ import { ethers } from "ethers";
 import React, { useCallback, useEffect, useState } from "react";
 import { useMoralis } from "react-moralis";
 
+const apiUrl =
+  process.env.NODE_ENV === "production"
+    ? process.env.NEXT_PUBLIC_API_URL_PROD
+    : process.env.NEXT_PUBLIC_API_URL_DEV;
+
 export const Navbar = () => {
   const { enableWeb3, account, Moralis, deactivateWeb3 } = useMoralis();
   const [signerAddress, setSignerAddress] = useState<string | null>(null);
 
   const createBalanceForAddress = useCallback(async () => {
-    console.log({ signerAddress });
     if (!signerAddress) return;
 
-    const response = await fetch(
-      `http://localhost:3000/api/accounts/${signerAddress}`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    const response = await fetch(`${apiUrl}/accounts/${signerAddress}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
     const responseData = await response.json();
   }, [signerAddress]);
 
