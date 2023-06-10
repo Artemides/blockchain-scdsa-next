@@ -1,8 +1,7 @@
 "use client";
-import { Navbar } from "@/components/Navbar";
+import { Navbar } from "@/Components/Navbar";
 import "./globals.css";
 import { Inter } from "next/font/google";
-import { useEffect, useState } from "react";
 import { MoralisProvider } from "react-moralis";
 
 const inter = Inter({ subsets: ["latin"] });

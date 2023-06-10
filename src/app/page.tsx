@@ -4,10 +4,10 @@ import { useCallback, useEffect, useState } from "react";
 import { useMoralis } from "react-moralis";
 import { keccak256 } from "ethereum-cryptography/keccak";
 import { utf8ToBytes } from "ethereum-cryptography/utils";
-import { Alert } from "@/components/Alert";
-import { Card } from "@/components/Card";
-import { Modal } from "@/components/Modal";
-import { Accounts } from "@/components/Accounts";
+import { Alert } from "@/Components/Alert";
+import { Card } from "@/Components/Card";
+import { Modal } from "@/Components/Modal";
+import { Accounts } from "@/Components/Accounts";
 
 const apiUrl =
   process.env.NODE_ENV === "production"
