@@ -6,7 +6,6 @@ export async function GET(request: Request, { params }: any) {
     const address = params.address;
     console.log({ address });
     const balance = getBalanceOf(address);
-    console.log({ balance });
     return NextResponse.json({ balance }, { status: 200 });
   } catch (error) {
     console.log({ error });

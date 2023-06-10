@@ -1,6 +1,5 @@
 "use client";
 import { Card } from "@/Components/Card";
-import Image from "next/image";
 import MetamaskSDK, { MetaMaskSDKOptions } from "@metamask/sdk";
 import { useCallback, useEffect, useState } from "react";
 import { Alert } from "@/Components/Alert";
@@ -8,7 +7,6 @@ import { useMoralis } from "react-moralis";
 import { keccak256 } from "ethereum-cryptography/keccak";
 import { utf8ToBytes } from "ethereum-cryptography/utils";
 import { Accounts } from "@/Components/Accounts";
-import { Modak } from "next/font/google";
 import { Modal } from "@/Components/Modal";
 export default function Home() {
   // const MMSDK = new MetamaskSDK();
@@ -80,9 +78,7 @@ export default function Home() {
         },
       });
       const responseData = await response.json();
-      console.log({ responseData });
       if (!response.ok) {
-        console.log({ message: responseData.message });
         setErrorMessage(responseData.message);
       } else {
         setErrorMessage(null);

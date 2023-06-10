@@ -10,7 +10,6 @@ export async function POST(request: NextRequest) {
   const parsedSignature = ethers.verifyMessage(dataHashed, signature);
   const isValid = parsedSignature === pubKey;
 
-  console.log({ parsedSignature, pubKey });
   if (!isValid)
     return NextResponse.json(
       { message: "Not allowed to transfer" },
@@ -21,7 +20,6 @@ export async function POST(request: NextRequest) {
   const to = data.recipientAddress;
   const value = data.ammount;
 
-  console.log({ from, to, value });
   const fromBalance = getBalanceOf(from);
   if (!value || fromBalance < value)
     return NextResponse.json(
